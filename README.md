@@ -1,46 +1,121 @@
-# Getting Started with Create React App
+# React-Slickgrid
+An attempt to use Slickgrid Universal Vanila bundle in React using Create-React-App and CRACO. 
+ 
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## CRACO
 
-In the project directory, you can run:
+[![NPM Status](https://img.shields.io/npm/v/@craco/craco.svg)](https://www.npmjs.com/package/@craco/craco)
+[![Build Status](https://img.shields.io/travis/gsoft-inc/craco/master.svg?style=flat&label=travis)](https://travis-ci.org/gsoft-inc/craco)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/sharegate/craco/pulls)
 
-### `yarn start`
+[![NPM Downloads](https://img.shields.io/npm/dm/@craco/craco.svg)](https://www.npmjs.com/package/@craco/craco)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**C**reate **R**eact **A**pp **C**onfiguration **O**verride is an easy and comprehensible configuration layer for create-react-app.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Get all the benefits of create-react-app **and** customization without using 'eject' by adding a single `craco.config.js` file at the root of your application and customize your eslint, babel, postcss configurations and many more.
 
-### `yarn test`
+All you have to do is create your app using [create-react-app](https://github.com/facebook/create-react-app/) and customize the configuration with a `craco.config.js` file.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Support
 
-### `yarn build`
+- Create React App (CRA) 4.*
+- Yarn
+- Yarn Workspace
+- NPM
+- Lerna (with or without hoisting)
+- Custom `react-scripts` version
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+For reference: https://github.com/gsoft-inc/craco
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Modifications to use Slickgrid
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Create a craco.config.js with the following code:
 
-### `yarn eject`
+        const {
+          addBeforeLoader,
+          loaderByName,
+          throwUnexpectedConfigError,
+          ESLINT_MODES
+        } = require('@craco/craco');
+        
+        const webpack = require('webpack');
+        
+        const throwError = (message) =>
+          throwUnexpectedConfigError({
+            packageName: 'craco',
+            githubRepo: 'gsoft-inc/craco',
+            message,
+            githubIssueQuery: 'webpack'
+          });
+        
+        module.exports = {
+          eslint: {
+            mode: ESLINT_MODES.file
+          },
+          webpack: {
+            plugins: [
+              new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+                'window.jQuery': 'jquery',
+                'window.$': 'jquery',
+                'global.jQuery': 'jquery'
+              })
+            ],
+            configure: (webpackConfig) => {
+              webpackConfig.resolve.extensions.push('.html');
+        
+              const htmlLoader = {
+                loader: require.resolve('html-loader'),
+                test: /\.html$/
+              };
+        
+              if (!htmlLoader) throwError('failed to load html-loader');
+        
+              addBeforeLoader(webpackConfig, loaderByName('file-loader'), htmlLoader);
+        
+              return webpackConfig;
+            }
+          }
+        };
+        
+## Install the following packages as dependencies:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    @slickgrid-universal/common
+    @slickgrid-universal/composite-editor-component
+    @slickgrid-universal/custom-footer-component
+    @slickgrid-universal/empty-warning-component
+    @slickgrid-universal/event-pub-sub
+    @slickgrid-universal/excel-export
+    @slickgrid-universal/graphql
+    @slickgrid-universal/odata
+    @slickgrid-universal/pagination-component
+    @slickgrid-universal/rxjs-observable
+    @slickgrid-universal/text-expor
+    @slickgrid-universal/vanilla-bundle
+    bulma
+    jquery
+    jquery-ui-bundle
+    multiple-select-modified
+    sass
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Install the following dependencies as dev dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    @craco/craco
+    @types/jquery
+    eslint-config-prettier
+    eslint-plugin-prettier
+    html-loader
+    prettier
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**Things to be done after npm install or yarn install:**
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+    1) Copy files from node_modules/multiple-select-modified/src to node_modules/@slickgrid-universal/common/dist/esm/filters/lib
+    
+    2) edit index.js in node_modules/@slickgrid-universal/common/dist/esm/filters/
+       add the following: export * from './lib/multiple-select.js';
+    
+       **Very important: remember to do the above if re-installing and/or installing new packages.**
