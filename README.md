@@ -108,14 +108,9 @@ For reference: https://github.com/gsoft-inc/craco
     @types/jquery
     eslint-config-prettier
     eslint-plugin-prettier
-    html-loader
+    html-loader@1
     prettier
 
-**Things to be done after npm install or yarn install:**
+**A postinstall script is executed after npm install to set some files needed by Slickgrid** 
 
-    1) Copy files from node_modules/multiple-select-modified/src to node_modules/@slickgrid-universal/common/dist/esm/filters/lib
-    
-    2) edit index.js in node_modules/@slickgrid-universal/common/dist/esm/filters/
-       add the following: export * from './lib/multiple-select.js';
-    
-       **Very important: remember to do the above if re-installing and/or installing new packages.**
+Look at postinstall.js at the root folder.

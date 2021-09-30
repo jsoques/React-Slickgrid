@@ -5,18 +5,18 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
-    "@slickgrid-universal/common": "^0.17.0",
-    "@slickgrid-universal/composite-editor-component": "^0.17.0",
-    "@slickgrid-universal/custom-footer-component": "^0.17.0",
-    "@slickgrid-universal/empty-warning-component": "^0.17.0",
-    "@slickgrid-universal/event-pub-sub": "^0.17.0",
-    "@slickgrid-universal/excel-export": "^0.17.0",
-    "@slickgrid-universal/graphql": "^0.17.0",
-    "@slickgrid-universal/odata": "^0.17.0",
-    "@slickgrid-universal/pagination-component": "^0.17.0",
-    "@slickgrid-universal/rxjs-observable": "^0.17.0",
-    "@slickgrid-universal/text-export": "^0.17.0",
-    "@slickgrid-universal/vanilla-bundle": "^0.17.0",
+    "@slickgrid-universal/common": "^0.18.0",
+    "@slickgrid-universal/composite-editor-component": "^0.18.0",
+    "@slickgrid-universal/custom-footer-component": "^0.18.0",
+    "@slickgrid-universal/empty-warning-component": "^0.18.0",
+    "@slickgrid-universal/event-pub-sub": "^0.18.0",
+    "@slickgrid-universal/excel-export": "^0.18.0",
+    "@slickgrid-universal/graphql": "^0.18.0",
+    "@slickgrid-universal/odata": "^0.18.0",
+    "@slickgrid-universal/pagination-component": "^0.18.0",
+    "@slickgrid-universal/rxjs-observable": "^0.18.0",
+    "@slickgrid-universal/text-export": "^0.18.0",
+    "@slickgrid-universal/vanilla-bundle": "^0.18.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -38,7 +38,8 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "postinstall": "node postinstall.js"
   },
   "eslintConfig": {
     "extends": [
